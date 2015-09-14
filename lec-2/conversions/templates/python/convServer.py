@@ -12,16 +12,29 @@ import sys
 
 ## Function to process requests
 def process(conn):
-    conn.send("Welcome, you are connected to a Python-based server\n")
+    #conn.send("Welcome to banana's potassium calculater. Please send the number of bananas.\n")
 
     # read userInput from client
     userInput = conn.recv(BUFFER_SIZE)
+
+    response = ''
     if not userInput:
         print "Error reading message"
-        sys.exit(1)
+        return
 
-    print "Received message: ", userInput
-    # TODO: add convertion function here, reply = func(userInput)
+    userInputs = userInput.split(' ')
+
+    if len(userInputs) != 3:
+	response = "Invalid Data"
+    else:
+        inputNum = userInputs[2]
+        if not inputNum.isdigit():
+	    response = "Invalid Number"
+        else:
+    	    num = int(inputNum)
+	    response = str(0.442 * num)
+
+    conn.send(response)
 
     conn.close()
 
